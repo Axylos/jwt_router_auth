@@ -1,0 +1,24 @@
+<% include partials/head %>
+<div>
+  <h1>
+    time to sign up asshead
+  </h1>
+
+  <div>
+    <form action="/register" method="POST">
+      <label for="username">username</label>
+      <input type="text" name="username" id="username" value="" />
+
+      <label for="password_digest">password_digest</label>
+      <input type="password" name="password" id="password" value="" />
+
+      <button type="submit" value="submit">Submit</button>
+
+    </form>
+
+    <p>
+      Or head on <a href="/login">or head on over to login</a>
+    </p>
+    <div>
+</div>
+<% include partials/foot %>
