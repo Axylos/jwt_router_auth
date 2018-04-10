@@ -9,7 +9,8 @@ const jwt = require('jsonwebtoken');
 const PORT = 8085;
 const app = express();
 const db = require('./db');
-const SECRET = 'A BIG HOLDAF SECRET#@$AKSFJKJ3421344ASDFK'
+require('dotenv').config();
+const SECRET = process.env.SECRET;
 
 function makeToken(payload) {
   return jwt.sign(payload, SECRET);
