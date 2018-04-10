@@ -1,8 +1,25 @@
 <% include partials/head %>
 <div>
-  you did it!
+  <h1>you did it!</h1>
+  <div>
+    <h2>Toggle  Register</h2>
+    <p><button onclick="turnOff(false)">Turn That Shit Off</button></p>
+    <p><button onclick="turnOff(true)">Light It Up</button></p>
+  </div>
   <p>
     Now get on back to <a href="http://router.draketalley.com" target="_self">that routery goodness</a>
   </p>
 </div>
+<script type="application/javascript">
+  function turnOff(val) {
+    fetch(`/toggle-register/?val=${val}`)
+      .then(resp => {
+        if (!resp.ok) {
+          console.log('we had an oopsie: ', resp);
+        } else {
+          return resp.json();
+        }
+      }).then(data => alert(`here's the answer: ${data.msg}`));
+  }
+</script>
 <% include partials/foot %>

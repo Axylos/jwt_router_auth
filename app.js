@@ -10,8 +10,8 @@ const PORT = 8085;
 const app = express();
 const db = require('./db');
 const SECRET = 'A BIG HOLDAF SECRET#@$AKSFJKJ3421344ASDFK'
+
 function makeToken(payload) {
-  console.log('payload: ', payload);
   return jwt.sign(payload, SECRET);
 }
 
@@ -29,29 +29,28 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
-  console.log(req.url);
 
   res.send(401);
 });
 
+app.get('/toggle-register/', (req, res) => {
+  const { val } = req.query;
+  db.one(`UPDATE register_opts SET show_register = $1`, val);
+  res.status(200).json({msg: `val is: ${val}` });
+});
+
 app.get('/router/test', (req, res) => {
-  console.log('router test: ', req.cookies);
   const token = req.cookies['router-token'];
-  console.log('token to c;hecK ', token);
   jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
-      console.log('not a valid token');
       res.send(401);
     } else {
-      console.log("you're good to go");
       res.send(200);
     }
   });
 });
 
 app.post('/foo', (req, res) => {
-  console.log(req.headers);
-  console.log(req.body);
   res.send(req.body);
 })
 
@@ -63,18 +62,16 @@ app.post('/login', (req, res) => {
   const name = req.body.username;
   const pword = req.body.password;
 
-  db.one(`SELECT * FROM router_user WHERE name = $1`, name)
+  db.oneOrNone(`SELECT * FROM router_user WHERE name = $1`, name)
     .then(data => {
-      console.log(JSON.stringify(data.password_digest));
-      console.log(pword);
-      console.log('trying to bcrypt')
+      if (!data) {
+        res.send(401);
+      }
       bcrypt.compare(pword, data.password_digest).then(hash => {
         if (!hash) {
-          console.log('we had an oopsie: ', err);
           res.send(401);
         } else {
           const newToken = makeToken(data.name, SECRET);
-          console.log('new token is: ', newToken);
           res.cookie('router-token', 
           newToken,
           {
@@ -84,26 +81,30 @@ app.post('/login', (req, res) => {
           res.render('success');
         }
       }).catch(err => {
-        console.log('we had an oopsie: ', err);
         res.status(401).json({err})
       })
   });
 });
 
 app.get('/register', (req, res) => {
-  res.status(200).render('register');
+  db.one(`SELECT show_register FROM register_opts`)
+    .then(data => {
+      const showReg = data.show_register;
+      if (showReg) {
+        res.status(200).render('register');
+      } else {
+        res.render('blocked');
+      }
+
+    })
 });
 
 app.post('/register', urlParser, (req, res) => {
-  console.log('body: ', req.body);
   const pword = req.body.password;
   const digest = bcrypt.hashSync(pword, salt);
   db.one(`INSERT INTO router_user VALUES ($1, $2) RETURNING *`, [req.body.username, digest])
     .then(data => {
-      console.log(`user created: ${data}`);
-      console.log(JSON.stringify(data));
       const newToken = makeToken(data.name, SECRET);
-      console.log('new token is: ', newToken);
       res.cookie('router-token', 
         newToken,
         {
@@ -115,12 +116,10 @@ app.post('/register', urlParser, (req, res) => {
 })
 
 app.get('/test', (req, res) => {
-  console.log(req.cookies);
   res.send(200);
 })
 
 app.get('/router', (req, res) => {
-  console.log(req.cookies);
   res.send(401);
 });
 

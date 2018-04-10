@@ -18,10 +18,14 @@ function dropToggle() {
 }
 function createRegToggle() {
   return db.any(`CREATE TABLE IF NOT EXISTS register_opts  (
-    hide_register BOOLEAN DEFAULT false
+    show_register BOOLEAN  DEFAULT false NOT NULL
   )`).then(data => console.log(data))
+    .then(() => {
+      return db.one(`INSERT INTO register_opts VALUES (true) RETURNING *`);
+    }).then(data => console.log('row inserted: ', data))
     .catch(err => console.log('oopsie: ', err))
 }
+
 
 dropUser().then(createUser)
 dropToggle().then(createRegToggle);
