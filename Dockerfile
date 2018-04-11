@@ -1,4 +1,4 @@
-FROM arm64v8/node-alpine
+FROM arm64v8/node:9.11.1-alpine
 WORKDIR /usr/src/app
 
 COPY package*.json ./
