@@ -6,7 +6,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 const logger = require('morgan');
 const jwt = require('jsonwebtoken');
-const PORT = 8085;
+const PORT = 8080;
 const app = express();
 const db = require('./db');
 require('dotenv').config();

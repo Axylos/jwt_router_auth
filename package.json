@@ -13,13 +13,16 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^2.0.0",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.1",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.3",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pg-promise": "^8.2.3"
   }
 }
