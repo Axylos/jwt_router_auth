@@ -2,16 +2,24 @@
   "name": "auth",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js -e ejs,html,js,css",
+    "start": "node app.js",
     "schema": "node schema.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
-    "method-override": "^2.3.10"
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "method-override": "^2.3.10",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.3",
+    "path": "^0.12.7"
   }
 }
