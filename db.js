@@ -1,12 +1,13 @@
 const promise = require('bluebird');
 const pg = require('pg-promise');
+require('dotenv').config();
 
 const options = {
   promiseLib: promise,
 };
 
 const config = {
-  host: 'kunai',
+  host: process.env.DB_HOST,
   port: 5432,
   database: 'router_auth',
   user: 'postgres'

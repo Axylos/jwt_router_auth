@@ -1,7 +1,7 @@
 const db = require('./db');
 
 function dropUser() {
-  return db.any(`DROP TABLE router_user`);
+  return db.any(`DROP TABLE IF EXISTS router_user`);
 }
 function createUser() {
   return db.any(`
@@ -14,7 +14,7 @@ function createUser() {
 }
 
 function dropToggle() {
-  return db.any(`DROP TABLE register_opts`);
+  return db.any(`DROP TABLE IF EXISTS register_opts`);
 }
 function createRegToggle() {
   return db.any(`CREATE TABLE IF NOT EXISTS register_opts  (
